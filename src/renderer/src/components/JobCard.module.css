@@ -1,6 +1,6 @@
 .card {
   background: var(--bg-surface);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-subtle);
   border-radius: 10px;
   padding: 10px 12px;
   cursor: pointer;
@@ -15,14 +15,14 @@
 
 .card:hover {
   background: var(--bg-elevated);
-  border-color: #44446a;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+  border-color: #32324e;
+  box-shadow: var(--shadow-sm);
 }
 
 .card.selected {
   background: var(--bg-elevated);
   border-color: var(--accent);
-  box-shadow: 0 0 0 1px rgba(232, 125, 13, 0.2);
+  box-shadow: 0 0 0 1px var(--accent-glow), var(--shadow-md);
 }
 
 .card.running  { border-left-color: var(--warning); }
@@ -33,12 +33,13 @@
 
 /* ── Thumbnail ───────────────────────────────────────────── */
 .thumb {
-  width: 72px;
+  width: 68px;
   flex-shrink: 0;
   border-radius: 6px;
   object-fit: cover;
   align-self: stretch;
   background: #000;
+  opacity: 0.9;
 }
 
 /* ── Content column ──────────────────────────────────────── */
@@ -47,28 +48,28 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 0;
 }
 
 /* ── Header row ──────────────────────────────────────────── */
 .header {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 6px;
+  gap: 7px;
+  margin-bottom: 5px;
 }
 
 .index {
-  font-size: 11px;
+  font-size: 10px;
   color: var(--text-muted);
-  min-width: 22px;
+  min-width: 20px;
   font-variant-numeric: tabular-nums;
+  font-weight: 600;
 }
 
 .name {
   flex: 1;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 13px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -78,26 +79,26 @@
 .badge {
   font-size: 10px;
   font-weight: 700;
-  padding: 2px 8px;
-  border-radius: 10px;
+  padding: 2px 7px;
+  border-radius: 8px;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.07em;
   flex-shrink: 0;
   display: flex;
   align-items: center;
   gap: 5px;
 }
 
-.badge.pending   { background: rgba(80, 144, 232, 0.12); color: var(--info); }
-.badge.running   { background: rgba(232, 160, 32, 0.15); color: var(--warning); }
-.badge.completed { background: rgba(76, 175, 110, 0.15); color: var(--success); }
-.badge.failed    { background: rgba(224, 82, 82, 0.15);  color: var(--error); }
-.badge.cancelled { background: rgba(96, 96, 128, 0.12); color: var(--text-muted); }
+.badge.pending   { background: rgba(77, 142, 224, 0.12);  color: var(--info); }
+.badge.running   { background: rgba(232, 160, 32, 0.15);  color: var(--warning); }
+.badge.completed { background: rgba(63, 184, 106, 0.15);  color: var(--success); }
+.badge.failed    { background: rgba(224, 79, 79, 0.15);   color: var(--error); }
+.badge.cancelled { background: rgba(96, 96, 128, 0.12);   color: var(--text-muted); }
 
 /* Animated dot for running */
 .pulseDot {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   background: var(--warning);
   animation: pulse 1.2s ease-in-out infinite;
@@ -106,50 +107,50 @@
 
 @keyframes pulse {
   0%, 100% { opacity: 1; transform: scale(1); }
-  50%       { opacity: 0.4; transform: scale(0.7); }
+  50%       { opacity: 0.35; transform: scale(0.65); }
 }
 
 /* Action buttons */
 .btns {
   display: flex;
-  gap: 2px;
+  gap: 1px;
   flex-shrink: 0;
 }
 
 .btns button {
   background: none;
   color: var(--text-muted);
-  padding: 3px 7px;
-  font-size: 13px;
+  padding: 3px 6px;
+  font-size: 12px;
   border-radius: 5px;
   transition: background 0.1s, color 0.1s;
 }
 
 .btns button:hover { background: var(--bg-hover); color: var(--text-primary); }
-.btnRetry:hover  { color: var(--info) !important; }
-.btnCancel:hover { color: var(--error) !important; }
-.btnFolder:hover { color: var(--accent) !important; }
-.btnRemove:hover { color: var(--error) !important; }
+.btnRetry:hover  { color: var(--info)    !important; }
+.btnCancel:hover { color: var(--error)   !important; }
+.btnFolder:hover { color: var(--accent)  !important; }
+.btnRemove:hover { color: var(--error)   !important; }
 
 /* ── Meta row ────────────────────────────────────────────── */
 .meta {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 12px;
+  gap: 5px;
+  font-size: 11px;
   color: var(--text-secondary);
   flex-wrap: wrap;
   line-height: 1.4;
 }
 
 .file {
-  max-width: 220px;
+  max-width: 200px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   color: var(--text-muted);
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 10px;
 }
 
 .sep { color: var(--border); }
@@ -159,12 +160,12 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-top: 10px;
+  margin-top: 8px;
 }
 
 .progressBar {
   flex: 1;
-  height: 4px;
+  height: 3px;
   background: var(--bg-hover);
   border-radius: 2px;
   overflow: hidden;
@@ -172,28 +173,28 @@
 
 .progressFill {
   height: 100%;
-  background: var(--accent);
+  background: linear-gradient(90deg, var(--accent-dim), var(--accent));
   border-radius: 2px;
   transition: width 0.5s ease;
 }
 
 .progressLabel {
   font-size: 11px;
-  color: var(--text-secondary);
+  color: var(--text-muted);
   white-space: nowrap;
-  min-width: 80px;
+  min-width: 72px;
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
 /* ── Error ───────────────────────────────────────────────── */
 .error {
-  margin-top: 8px;
+  margin-top: 6px;
   font-size: 11px;
   color: var(--error);
-  background: rgba(224, 82, 82, 0.07);
+  background: rgba(224, 79, 79, 0.07);
   border-radius: 4px;
-  padding: 5px 8px;
+  padding: 4px 8px;
   font-family: var(--font-mono);
   white-space: nowrap;
   overflow: hidden;

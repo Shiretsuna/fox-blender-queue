@@ -5,13 +5,15 @@
 }
 
 :root {
-  --bg-base:     #0d0d18;
-  --bg-surface:  #13131f;
-  --bg-elevated: #1c1c2e;
-  --bg-hover:    #252538;
+  --bg-base:     #0b0b15;
+  --bg-surface:  #111120;
+  --bg-elevated: #1a1a2e;
+  --bg-hover:    #22223a;
   --border:      #2a2a44;
+  --border-subtle: #1e1e34;
   --accent:      #f07d10;
   --accent-dim:  #a35b08;
+  --accent-glow: rgba(240, 125, 16, 0.18);
   --text-primary:   #eaeaf4;
   --text-secondary: #8888aa;
   --text-muted:     #55556a;
@@ -22,6 +24,9 @@
   --font:      'Segoe UI', system-ui, -apple-system, sans-serif;
   --font-mono: 'Cascadia Code', 'Consolas', 'Courier New', monospace;
   --radius: 8px;
+  --shadow-sm: 0 1px 4px rgba(0,0,0,0.35);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.45);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.55);
 }
 
 html, body, #root {
@@ -46,7 +51,7 @@ button {
   outline: none;
   border-radius: 6px;
   padding: 6px 14px;
-  transition: background 0.15s, opacity 0.15s;
+  transition: background 0.15s, opacity 0.15s, box-shadow 0.15s;
 }
 
 button:disabled {
@@ -64,11 +69,12 @@ input, select {
   padding: 6px 10px;
   outline: none;
   width: 100%;
-  transition: border-color 0.15s;
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
 
 input:focus, select:focus {
   border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-glow);
 }
 
 select option {
@@ -77,8 +83,11 @@ select option {
 
 label {
   display: block;
-  font-size: 12px;
-  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
   margin-bottom: 4px;
 }
 
@@ -88,8 +97,8 @@ hr {
 }
 
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {

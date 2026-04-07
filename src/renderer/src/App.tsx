@@ -24,7 +24,39 @@ export default function App(): JSX.Element {
   const [showSetup, setShowSetup] = useState(false)
   const [isDragOver, setIsDragOver] = useState(false)
   const [isReadingBlend, setIsReadingBlend] = useState(false)
+  const [detailWidth, setDetailWidth] = useState(360)
   const dragCounter = useRef(0)
+  const isResizing = useRef(false)
+  const resizeStartX = useRef(0)
+  const resizeStartW = useRef(0)
+
+  const handleResizerMouseDown = useCallback((e: React.MouseEvent) => {
+    isResizing.current = true
+    resizeStartX.current = e.clientX
+    resizeStartW.current = detailWidth
+    document.body.style.cursor = 'col-resize'
+    document.body.style.userSelect = 'none'
+  }, [detailWidth])
+
+  useEffect(() => {
+    const onMove = (e: MouseEvent) => {
+      if (!isResizing.current) return
+      const delta = resizeStartX.current - e.clientX
+      setDetailWidth(Math.min(620, Math.max(240, resizeStartW.current + delta)))
+    }
+    const onUp = () => {
+      if (!isResizing.current) return
+      isResizing.current = false
+      document.body.style.cursor = ''
+      document.body.style.userSelect = ''
+    }
+    document.addEventListener('mousemove', onMove)
+    document.addEventListener('mouseup', onUp)
+    return () => {
+      document.removeEventListener('mousemove', onMove)
+      document.removeEventListener('mouseup', onUp)
+    }
+  }, [])
 
   useEffect(() => {
     window.api.getState().then((s) => {
@@ -153,7 +185,8 @@ export default function App(): JSX.Element {
           />
         </div>
 
-        <div className={styles.detailPanel}>
+        <div className={styles.resizer} onMouseDown={handleResizerMouseDown} />
+        <div className={styles.detailPanel} style={{ width: detailWidth }}>
           <JobDetailPanel
             job={selectedJob}
             onClose={() => setSelectedJobId(null)}

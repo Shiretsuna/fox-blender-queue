@@ -49,6 +49,7 @@ function JobDetail({ job, onClose }: { job: RenderJob; onClose: () => void }): J
   const [editStart, setEditStart] = useState(String(job.frameStart))
   const [editEnd, setEditEnd] = useState(String(job.frameEnd))
   const [editStep, setEditStep] = useState(String(job.frameStep))
+  const [editOutput, setEditOutput] = useState(job.outputPath ?? '')
   const canEdit = job.status !== 'running'
 
   // Sync edit fields when a different job is selected
@@ -56,6 +57,7 @@ function JobDetail({ job, onClose }: { job: RenderJob; onClose: () => void }): J
     setEditStart(String(job.frameStart))
     setEditEnd(String(job.frameEnd))
     setEditStep(String(job.frameStep))
+    setEditOutput(job.outputPath ?? '')
   }, [job.id])
 
   // Load frame preview thumbnail whenever lastFramePath changes
@@ -78,6 +80,18 @@ function JobDetail({ job, onClose }: { job: RenderJob; onClose: () => void }): J
     const step = Math.max(1, parseInt(editStep) || 1)
     if (isNaN(start) || isNaN(end)) return
     window.api.updateJobParams(job.id, { frameStart: start, frameEnd: end, frameStep: step })
+  }
+
+  const saveOutputPath = (): void => {
+    window.api.updateJobParams(job.id, { outputPath: editOutput.trim() || undefined })
+  }
+
+  const pickOutputFolder = async (): Promise<void> => {
+    const path = await window.api.openFolderDialog()
+    if (!path) return
+    const val = path.replace(/\\/g, '/') + '/frame_####'
+    setEditOutput(val)
+    window.api.updateJobParams(job.id, { outputPath: val })
   }
 
   const totalFrames = Math.floor((job.frameEnd - job.frameStart) / job.frameStep) + 1
@@ -195,8 +209,22 @@ function JobDetail({ job, onClose }: { job: RenderJob; onClose: () => void }): J
         <div className={styles.sectionLabel}>Paths</div>
         <div className={styles.params}>
           <Param label="File" value={job.blendFile} mono truncate />
-          {job.outputPath && <Param label="Output" value={job.outputPath} mono truncate />}
         </div>
+
+        <div className={styles.outputRow}>
+          <input
+            className={styles.outputInput}
+            value={editOutput}
+            disabled={!canEdit}
+            onChange={(e) => setEditOutput(e.target.value)}
+            onBlur={saveOutputPath}
+            placeholder="From .blend file (leave empty for scene default)"
+          />
+          {canEdit && (
+            <button className={styles.outputPickBtn} onClick={pickOutputFolder} title="Browse">…</button>
+          )}
+        </div>
+
         <button className={styles.openFolderBtn} onClick={() => {
           const parentDir = (p: string) => p.replace(/\\/g, '/').replace(/\/[^/]+$/, '')
           const target = job.lastFramePath ? parentDir(job.lastFramePath) : parentDir(job.blendFile)

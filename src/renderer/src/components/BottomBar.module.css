@@ -3,11 +3,12 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 8px 16px;
+  padding: 0 16px;
   background: var(--bg-surface);
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--border-subtle);
   flex-shrink: 0;
-  height: 40px;
+  height: 38px;
+  box-shadow: 0 -1px 8px rgba(0,0,0,0.25);
 }
 
 .left {
@@ -20,18 +21,21 @@
 
 .idle {
   color: var(--text-muted);
+  font-style: italic;
 }
 
 .stat {
   color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
 }
 
 .failed {
   color: var(--error);
+  font-weight: 600;
 }
 
 .currentJob {
-  color: var(--text-secondary);
+  color: var(--text-muted);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -40,6 +44,7 @@
 .currentJob em {
   font-style: normal;
   color: var(--warning);
+  font-weight: 600;
 }
 
 .right {
@@ -52,14 +57,16 @@
 .pct {
   font-size: 12px;
   color: var(--text-secondary);
-  min-width: 32px;
+  min-width: 34px;
   text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
 }
 
 .track {
   position: relative;
-  width: 200px;
-  height: 6px;
+  width: 160px;
+  height: 5px;
   background: var(--bg-elevated);
   border-radius: 3px;
   overflow: hidden;
@@ -70,7 +77,7 @@
   left: 0;
   top: 0;
   height: 100%;
-  background: var(--success);
+  background: linear-gradient(90deg, #2e9e55, var(--success));
   border-radius: 3px;
   transition: width 0.4s ease;
 }
@@ -79,6 +86,6 @@
   position: absolute;
   top: 0;
   height: 100%;
-  background: var(--accent);
+  background: linear-gradient(90deg, var(--accent-dim), var(--accent));
   transition: width 0.4s ease, left 0.4s ease;
 }

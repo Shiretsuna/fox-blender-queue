@@ -18,9 +18,22 @@
   padding: 12px;
 }
 
+.resizer {
+  width: 4px;
+  background: var(--border);
+  cursor: col-resize;
+  flex-shrink: 0;
+  transition: background 0.15s;
+  position: relative;
+}
+.resizer:hover,
+.resizer:active {
+  background: var(--accent);
+}
+
 .detailPanel {
-  width: 360px;
-  border-left: 1px solid var(--border);
+  /* width set via inline style */
+  border-left: none;
   overflow: hidden;
   display: flex;
   flex-direction: column;

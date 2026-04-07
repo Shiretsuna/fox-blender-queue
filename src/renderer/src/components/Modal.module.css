@@ -1,24 +1,26 @@
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.65);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 100;
   padding: 20px;
+  backdrop-filter: blur(3px);
 }
 
 .modal {
   background: var(--bg-surface);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 14px;
   width: 100%;
   max-width: 640px;
   max-height: 90vh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  box-shadow: var(--shadow-lg);
 }
 
 .header {
@@ -26,22 +28,25 @@
   align-items: center;
   justify-content: space-between;
   padding: 16px 20px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--border-subtle);
   flex-shrink: 0;
+  background: var(--bg-elevated);
 }
 
 .title {
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
 }
 
 .close {
   background: none;
   color: var(--text-muted);
-  font-size: 16px;
+  font-size: 15px;
   padding: 4px 8px;
+  border-radius: 5px;
 }
-.close:hover { color: var(--text-primary); }
+.close:hover { color: var(--text-primary); background: var(--bg-hover); }
 
 .body {
   flex: 1;
@@ -55,10 +60,11 @@
 .footer {
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
+  gap: 8px;
   padding: 14px 20px;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--border-subtle);
   flex-shrink: 0;
+  background: var(--bg-elevated);
 }
 
 .field {
@@ -77,15 +83,18 @@
 .hint {
   font-size: 11px;
   color: var(--text-muted);
+  line-height: 1.5;
 }
 
 .section {
-  font-size: 11px;
+  font-size: 10px;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   color: var(--text-muted);
-  font-weight: 600;
-  padding-top: 4px;
+  font-weight: 700;
+  padding-top: 6px;
+  padding-bottom: 2px;
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 .twoCol {
@@ -114,19 +123,23 @@
   color: var(--text-secondary);
   border: 1px solid var(--border);
 }
-.btnCancel:hover { background: var(--bg-hover); }
+.btnCancel:hover { background: var(--bg-hover); color: var(--text-primary); }
 
 .btnSubmit {
   background: var(--accent);
   color: #fff;
-  font-weight: 600;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(240, 125, 16, 0.3);
 }
-.btnSubmit:hover:not(:disabled) { background: #c96c0b; }
+.btnSubmit:hover:not(:disabled) {
+  background: #d06e0d;
+  box-shadow: 0 2px 12px rgba(240, 125, 16, 0.45);
+}
 
 .btnSecondary {
   background: var(--bg-elevated);
   color: var(--info);
-  border: 1px solid var(--border);
+  border: 1px solid rgba(77, 142, 224, 0.25);
   align-self: flex-start;
 }
 .btnSecondary:hover { background: var(--bg-hover); }

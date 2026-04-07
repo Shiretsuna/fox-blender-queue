@@ -8,7 +8,7 @@ type StateChangeCallback = (state: QueueState) => void
 export type JobParamPatch = Pick<RenderJob,
   'name' | 'frameStart' | 'frameEnd' | 'frameStep' |
   'samples' | 'resolutionX' | 'resolutionY' | 'resolutionScale' | 'threads'
->
+> & { outputPath?: string }
 
 export class RenderQueue {
   private state: QueueState = {
