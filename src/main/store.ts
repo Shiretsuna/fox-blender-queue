@@ -4,12 +4,18 @@ import { join } from 'path'
 
 interface Config {
   blenderPath: string
+  defaultOutputPath: string
+  defaultOutputEnabled: boolean
 }
 
 const CONFIG_DIR = app.getPath('userData')
 const CONFIG_PATH = join(CONFIG_DIR, 'config.json')
 
-const DEFAULTS: Config = { blenderPath: '' }
+const DEFAULTS: Config = {
+  blenderPath: '',
+  defaultOutputPath: '',
+  defaultOutputEnabled: false
+}
 
 function load(): Config {
   try {
@@ -33,6 +39,16 @@ export const store = {
   get blenderPath(): string { return _config.blenderPath },
   set blenderPath(v: string) {
     _config.blenderPath = v
+    save(_config)
+  },
+  get defaultOutputPath(): string { return _config.defaultOutputPath },
+  set defaultOutputPath(v: string) {
+    _config.defaultOutputPath = v
+    save(_config)
+  },
+  get defaultOutputEnabled(): boolean { return _config.defaultOutputEnabled },
+  set defaultOutputEnabled(v: boolean) {
+    _config.defaultOutputEnabled = v
     save(_config)
   }
 }

@@ -13,6 +13,7 @@ const api = {
   cancelJob: (id: string): Promise<void> => ipcRenderer.invoke('queue:cancel-job', id),
   retryJob: (id: string): Promise<void> => ipcRenderer.invoke('queue:retry-job', id),
   setBlenderPath: (path: string): Promise<void> => ipcRenderer.invoke('queue:set-blender-path', path),
+  setDefaultOutput: (path: string, enabled: boolean): Promise<void> => ipcRenderer.invoke('queue:set-default-output', path, enabled),
 
   openBlendDialog: (): Promise<string | null> => ipcRenderer.invoke('dialog:open-blend'),
   openFolderDialog: (): Promise<string | null> => ipcRenderer.invoke('dialog:open-folder'),

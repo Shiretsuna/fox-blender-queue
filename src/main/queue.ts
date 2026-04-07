@@ -14,7 +14,9 @@ export class RenderQueue {
   private state: QueueState = {
     jobs: [],
     isRunning: false,
-    blenderPath: 'blender'
+    blenderPath: 'blender',
+    defaultOutputPath: '',
+    defaultOutputEnabled: false
   }
   private activeProcess: ChildProcess | null = null
   private onStateChange: StateChangeCallback
@@ -27,6 +29,11 @@ export class RenderQueue {
 
   setBlenderPath(p: string): void {
     this.state = { ...this.state, blenderPath: p }
+    this.emit()
+  }
+
+  setDefaultOutput(path: string, enabled: boolean): void {
+    this.state = { ...this.state, defaultOutputPath: path, defaultOutputEnabled: enabled }
     this.emit()
   }
 

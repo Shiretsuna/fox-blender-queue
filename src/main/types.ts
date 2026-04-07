@@ -46,4 +46,6 @@ export interface QueueState {
   jobs: RenderJob[]
   isRunning: boolean
   blenderPath: string
+  defaultOutputPath: string
+  defaultOutputEnabled: boolean
 }

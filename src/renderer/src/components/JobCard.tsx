@@ -9,6 +9,7 @@ interface Props {
   onRemove: () => void
   onCancel: () => void
   onRetry: () => void
+  onOpenFolder: () => void
 }
 
 const STATUS_LABEL: Record<JobStatus, string> = {
@@ -19,7 +20,7 @@ const STATUS_LABEL: Record<JobStatus, string> = {
   cancelled: 'Cancelled'
 }
 
-export function JobCard({ job, index, selected, onSelect, onRemove, onCancel, onRetry }: Props): JSX.Element {
+export function JobCard({ job, index, selected, onSelect, onRemove, onCancel, onRetry, onOpenFolder }: Props): JSX.Element {
   const totalFrames = Math.floor((job.frameEnd - job.frameStart) / job.frameStep) + 1
   const duration = job.durationMs != null ? formatDuration(job.durationMs) : null
 
@@ -42,6 +43,9 @@ export function JobCard({ job, index, selected, onSelect, onRemove, onCancel, on
           )}
           {(job.status === 'running' || job.status === 'pending') && (
             <button className={styles.btnCancel} onClick={onCancel} title="Cancel">✕</button>
+          )}
+          {job.status !== 'running' && (
+            <button className={styles.btnFolder} onClick={onOpenFolder} title="Open output folder">↗</button>
           )}
           {job.status !== 'running' && (
             <button className={styles.btnRemove} onClick={onRemove} title="Remove">🗑</button>

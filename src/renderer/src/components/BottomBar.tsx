@@ -24,7 +24,7 @@ export function BottomBar({ state }: Props): JSX.Element {
           <span className={styles.idle}>Queue empty</span>
         ) : (
           <>
-            <span className={styles.stat}>{completed}/{total} jobs done</span>
+            <span className={styles.stat}>{completed}/{total} done</span>
             {failed > 0 && <span className={styles.failed}>{failed} failed</span>}
             {running && (
               <span className={styles.currentJob}>

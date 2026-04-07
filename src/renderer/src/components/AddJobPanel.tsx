@@ -7,6 +7,8 @@ type AddJobParams = Omit<RenderJob, 'id' | 'status' | 'progress' | 'log'>
 
 interface Props {
   initialData?: (BlendInfo & { filePath?: string }) | null
+  defaultOutputPath?: string
+  defaultOutputEnabled?: boolean
   onAdd: (params: AddJobParams) => void
   onClose: () => void
 }
@@ -18,7 +20,7 @@ function toEngine(raw?: string): RenderEngine {
   return 'CYCLES'
 }
 
-export function AddJobPanel({ initialData, onAdd, onClose }: Props): JSX.Element {
+export function AddJobPanel({ initialData, defaultOutputPath, defaultOutputEnabled, onAdd, onClose }: Props): JSX.Element {
   const [name, setName] = useState('')
   const [blendFile, setBlendFile] = useState('')
   const [outputPath, setOutputPath] = useState('')
@@ -35,12 +37,19 @@ export function AddJobPanel({ initialData, onAdd, onClose }: Props): JSX.Element
   // Pre-fill fields when initialData is provided (from drag & drop or browse)
   useEffect(() => {
     if (!initialData) return
-    if (initialData.filePath) setBlendFile(initialData.filePath)
+    if (initialData.filePath) {
+      setBlendFile(initialData.filePath)
+      if (defaultOutputEnabled && defaultOutputPath) {
+        const blendName = initialData.filePath.split(/[\\/]/).pop()?.replace('.blend', '') || 'render'
+        setOutputPath(`${defaultOutputPath.replace(/\\/g, '/')}/${blendName}/frame_####`)
+      } else if (initialData.outputPath) {
+        setOutputPath(sanitizeOutputPath(initialData.outputPath))
+      }
+    }
     if (initialData.frameStart != null) setFrameStart(initialData.frameStart)
     if (initialData.frameEnd != null) setFrameEnd(initialData.frameEnd)
     if (initialData.frameStep != null) setFrameStep(initialData.frameStep)
     if (initialData.engine) setEngine(toEngine(initialData.engine))
-    if (initialData.outputPath) setOutputPath(sanitizeOutputPath(initialData.outputPath))
     if (initialData.resolutionX != null) setResX(initialData.resolutionX)
     if (initialData.resolutionY != null) setResY(initialData.resolutionY)
     if (initialData.resolutionScale != null) setResScale(initialData.resolutionScale)
@@ -73,8 +82,12 @@ export function AddJobPanel({ initialData, onAdd, onClose }: Props): JSX.Element
     const path = await window.api.openBlendDialog()
     if (!path) return
     setBlendFile(path)
-    const autoName = path.split(/[\\/]/).pop()?.replace('.blend', '') || ''
-    if (!name) setName(autoName)
+    const blendName = path.split(/[\\/]/).pop()?.replace('.blend', '') || ''
+    if (!name) setName(blendName)
+    // Apply default output path if enabled
+    if (defaultOutputEnabled && defaultOutputPath) {
+      setOutputPath(`${defaultOutputPath.replace(/\\/g, '/')}/${blendName}/frame_####`)
+    }
     // Read blend info for the picked file
     try {
       const info = await window.api.readBlendInfo(path)
@@ -82,7 +95,7 @@ export function AddJobPanel({ initialData, onAdd, onClose }: Props): JSX.Element
       if (info.frameEnd != null) setFrameEnd(info.frameEnd)
       if (info.frameStep != null) setFrameStep(info.frameStep)
       if (info.engine) setEngine(toEngine(info.engine))
-      if (info.outputPath) setOutputPath(sanitizeOutputPath(info.outputPath))
+      if (!defaultOutputEnabled && info.outputPath) setOutputPath(sanitizeOutputPath(info.outputPath))
       if (info.resolutionX != null) setResX(info.resolutionX)
       if (info.resolutionY != null) setResY(info.resolutionY)
       if (info.resolutionScale != null) setResScale(info.resolutionScale)
@@ -100,7 +113,7 @@ export function AddJobPanel({ initialData, onAdd, onClose }: Props): JSX.Element
     <div className={styles.overlay} onClick={onClose}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <div className={styles.header}>
-          <h2 className={styles.title}>Add Render Job</h2>
+          <h2 className={styles.title}>Add Blend File</h2>
           <button className={styles.close} onClick={onClose}>✕</button>
         </div>
 
@@ -117,7 +130,7 @@ export function AddJobPanel({ initialData, onAdd, onClose }: Props): JSX.Element
           )}
 
           <div className={styles.field}>
-            <label>Job Name</label>
+            <label>Name</label>
             <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Auto from scene / file name" />
           </div>
 
@@ -196,7 +209,7 @@ export function AddJobPanel({ initialData, onAdd, onClose }: Props): JSX.Element
         <div className={styles.footer}>
           <button className={styles.btnCancel} onClick={onClose}>Cancel</button>
           <button className={styles.btnSubmit} onClick={handleSubmit} disabled={!canSubmit}>
-            Add to Queue
+            Add to Render Queue
           </button>
         </div>
       </div>

@@ -1,5 +1,5 @@
 {
-  "name": "fox-blender-queue",
+  "name": "shiretsuna-s-blender-queue",
   "version": "0.1.0",
   "description": "A Blender render queue manager",
   "main": "out/main/index.js",
@@ -33,8 +33,8 @@
     "react-dom": "^18.3.1"
   },
   "build": {
-    "appId": "com.fox.blender-queue",
-    "productName": "Fox Blender Queue",
+    "appId": "com.shiretsuna.blender-queue",
+    "productName": "Shiretsuna's Blender Queue",
     "directories": {
       "output": "release"
     },
@@ -69,7 +69,7 @@
     "publish": {
       "provider": "github",
       "owner": "Shiretsuna",
-      "repo": "fox-blender-queue"
+      "repo": "shiretsuna-s-blender-queue"
     }
   }
 }

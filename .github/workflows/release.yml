@@ -20,7 +20,7 @@ jobs:
         include:
           - os: windows-latest
             build_args: --win nsis portable
-            artifact_pattern: release/Fox Blender Queue*.exe
+            artifact_pattern: release/Shiretsuna's Blender Queue*.exe
           - os: macos-latest
             build_args: --mac dmg zip
             artifact_pattern: release/*.dmg
@@ -70,8 +70,8 @@ jobs:
         shell: pwsh
         run: |
           $version = node -p "require('./package.json').version"
-          $src = "release\Fox Blender Queue-$version-windows-x64.exe"
-          $dst = "release\Fox Blender Queue-$version-windows-portable.exe"
+          $src = "release\Shiretsuna's Blender Queue-$version-windows-x64.exe"
+          $dst = "release\Shiretsuna's Blender Queue-$version-windows-portable.exe"
           if (Test-Path $src) { Move-Item -Path $src -Destination $dst }
 
       - name: Upload to GitHub Release

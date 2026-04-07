@@ -42,7 +42,7 @@ export function SetupModal({ onDone }: Props): JSX.Element {
       <div className={styles.modal}>
         <div className={styles.logoRow}>
           <span className={styles.logo}>&#9650;</span>
-          <span className={styles.appName}>Fox Blender Queue</span>
+          <span className={styles.appName}>Shiretsuna&apos;s Blender Queue</span>
         </div>
 
         {step === 'welcome' && (

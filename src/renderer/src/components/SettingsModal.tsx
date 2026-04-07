@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { QueueState } from '../../../main/types'
 import styles from './Modal.module.css'
+import settingsStyles from './SettingsModal.module.css'
 
 interface Props {
   state: QueueState
@@ -10,6 +11,8 @@ interface Props {
 
 export function SettingsModal({ state, onSetBlenderPath, onClose }: Props): JSX.Element {
   const [blenderPath, setBlenderPath] = useState(state.blenderPath)
+  const [defaultOutputPath, setDefaultOutputPath] = useState(state.defaultOutputPath)
+  const [defaultOutputEnabled, setDefaultOutputEnabled] = useState(state.defaultOutputEnabled)
 
   const pickExe = async (): Promise<void> => {
     const path = await window.api.openBlenderExeDialog()
@@ -22,8 +25,14 @@ export function SettingsModal({ state, onSetBlenderPath, onClose }: Props): JSX.
     else alert('Could not auto-detect Blender. Please set the path manually.')
   }
 
+  const pickOutputFolder = async (): Promise<void> => {
+    const path = await window.api.openFolderDialog()
+    if (path) setDefaultOutputPath(path.replace(/\\/g, '/'))
+  }
+
   const handleSave = async (): Promise<void> => {
     await onSetBlenderPath(blenderPath.trim())
+    await window.api.setDefaultOutput(defaultOutputPath.trim(), defaultOutputEnabled)
     onClose()
   }
 
@@ -36,6 +45,7 @@ export function SettingsModal({ state, onSetBlenderPath, onClose }: Props): JSX.
         </div>
 
         <div className={styles.body}>
+          {/* Blender path */}
           <div className={styles.field}>
             <label>Blender Executable Path</label>
             <div className={styles.row}>
@@ -54,6 +64,37 @@ export function SettingsModal({ state, onSetBlenderPath, onClose }: Props): JSX.
           <button className={styles.btnSecondary} onClick={detectAuto} style={{ marginTop: 4 }}>
             Auto-detect Blender
           </button>
+
+          <hr style={{ margin: '16px 0', border: 'none', borderTop: '1px solid var(--border)' }} />
+
+          {/* Default output path */}
+          <div className={settingsStyles.toggleRow}>
+            <span className={settingsStyles.toggleLabel}>Default Output Folder</span>
+            <button
+              className={`${settingsStyles.toggle} ${defaultOutputEnabled ? settingsStyles.toggleOn : ''}`}
+              onClick={() => setDefaultOutputEnabled(!defaultOutputEnabled)}
+              title={defaultOutputEnabled ? 'Disable' : 'Enable'}
+            >
+              <span className={settingsStyles.toggleThumb} />
+            </button>
+          </div>
+
+          {defaultOutputEnabled && (
+            <div className={styles.field} style={{ marginTop: 8 }}>
+              <label>Output Root Folder</label>
+              <div className={styles.row}>
+                <input
+                  value={defaultOutputPath}
+                  onChange={(e) => setDefaultOutputPath(e.target.value)}
+                  placeholder="/renders"
+                />
+                <button className={styles.btnPick} onClick={pickOutputFolder}>Browse</button>
+              </div>
+              <span className={styles.hint}>
+                Each blend file renders into <em>{defaultOutputPath || '/renders'}/{'<blend name>'}/frame_####</em>
+              </span>
+            </div>
+          )}
         </div>
 
         <div className={styles.footer}>

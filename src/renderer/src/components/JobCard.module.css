@@ -105,6 +105,7 @@
 .btns button:hover { background: var(--bg-hover); color: var(--text-primary); }
 .btnRetry:hover  { color: var(--info) !important; }
 .btnCancel:hover { color: var(--error) !important; }
+.btnFolder:hover { color: var(--accent) !important; }
 .btnRemove:hover { color: var(--error) !important; }
 
 /* ── Meta row ────────────────────────────────────────────── */

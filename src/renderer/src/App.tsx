@@ -114,7 +114,19 @@ export default function App(): JSX.Element {
         state={state}
         onStart={() => window.api.startQueue()}
         onPause={() => window.api.pauseQueue()}
-        onAddJob={() => openAddPanel(null)}
+        onAddJob={async () => {
+          const filePath = await window.api.openBlendDialog()
+          if (!filePath) return
+          setIsReadingBlend(true)
+          try {
+            const info = await window.api.readBlendInfo(filePath)
+            openAddPanel({ ...info, filePath })
+          } catch {
+            openAddPanel({ thumbnail: null, filePath })
+          } finally {
+            setIsReadingBlend(false)
+          }
+        }}
         onSettings={() => setShowSettings(true)}
       />
 
@@ -127,6 +139,14 @@ export default function App(): JSX.Element {
             onRemove={(id) => window.api.removeJob(id)}
             onCancel={(id) => window.api.cancelJob(id)}
             onRetry={(id) => window.api.retryJob(id)}
+            onOpenFolder={(id) => {
+              const job = state.jobs.find((j) => j.id === id)
+              if (!job) return
+              // outputPath may include filename pattern like /renders/scene/frame_####
+              // Open the directory portion
+              const dir = job.outputPath.replace(/\\/g, '/').replace(/\/[^/]+$/, '')
+              window.api.openPath(dir || job.outputPath)
+            }}
           />
         </div>
 
@@ -145,7 +165,7 @@ export default function App(): JSX.Element {
         <div className={styles.dragOverlay}>
           <div className={styles.dragBox}>
             <span className={styles.dragIcon}>⬇</span>
-            <span>Drop .blend file to add to queue</span>
+            <span>Drop .blend file to add</span>
           </div>
         </div>
       )}
@@ -163,6 +183,8 @@ export default function App(): JSX.Element {
       {showAddPanel && (
         <AddJobPanel
           initialData={addPanelData}
+          defaultOutputPath={state.defaultOutputPath}
+          defaultOutputEnabled={state.defaultOutputEnabled}
           onAdd={async (params) => {
             await window.api.addJob(params)
             setShowAddPanel(false)
@@ -188,6 +210,7 @@ export default function App(): JSX.Element {
           onClose={() => setShowSettings(false)}
         />
       )}
+
     </div>
   )
 }

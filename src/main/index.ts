@@ -14,6 +14,7 @@ const queue = new RenderQueue((state: QueueState) => {
   mainWindow?.webContents.send('queue:state', state)
 })
 if (store.blenderPath) queue.setBlenderPath(store.blenderPath)
+queue.setDefaultOutput(store.defaultOutputPath, store.defaultOutputEnabled)
 
 function createWindow(): void {
   mainWindow = new BrowserWindow({
@@ -21,7 +22,7 @@ function createWindow(): void {
     height: 800,
     minWidth: 900,
     minHeight: 600,
-    title: 'Fox Blender Queue',
+    title: "Shiretsuna's Blender Queue",
     backgroundColor: '#1a1a2e',
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
@@ -72,7 +73,13 @@ ipcMain.handle('render:frame-preview', (_e, filePath: string): string | null => 
 
 ipcMain.handle('queue:set-blender-path', (_e, path: string) => {
   queue.setBlenderPath(path)
-  store.blenderPath = path  // persist to disk
+  store.blenderPath = path
+})
+
+ipcMain.handle('queue:set-default-output', (_e, path: string, enabled: boolean) => {
+  queue.setDefaultOutput(path, enabled)
+  store.defaultOutputPath = path
+  store.defaultOutputEnabled = enabled
 })
 
 ipcMain.handle('dialog:open-blend', async () => {

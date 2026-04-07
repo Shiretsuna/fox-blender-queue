@@ -20,7 +20,7 @@ export function Toolbar({ state, onStart, onPause, onAddJob, onSettings }: Props
     <div className={styles.toolbar}>
       <div className={styles.brand}>
         <span className={styles.logo}>&#9650;</span>
-        <span className={styles.title}>Fox Blender Queue</span>
+        <span className={styles.title}>Shiretsuna&apos;s Blender Queue</span>
       </div>
 
       <div className={styles.stats}>
@@ -32,7 +32,7 @@ export function Toolbar({ state, onStart, onPause, onAddJob, onSettings }: Props
 
       <div className={styles.actions}>
         <button className={styles.btnAdd} onClick={onAddJob}>
-          + Add Job
+          + Add Blend File
         </button>
 
         {isRunning ? (

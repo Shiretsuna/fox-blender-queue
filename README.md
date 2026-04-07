@@ -1,6 +1,6 @@
-# Fox Blender Queue
+# Shiretsuna's Blender Queue
 
-A cross-platform desktop render queue manager for [Blender](https://www.blender.org/). Add your `.blend` scenes, configure render parameters, and let the queue process them one by one — no babysitting required.
+A cross-platform desktop render queue manager for [Blender](https://www.blender.org/). Add your `.blend` files, configure render parameters, and let the queue process them one by one — no babysitting required.
 
 ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-blue)
 ![License](https://img.shields.io/badge/license-GPL--3.0-orange)
@@ -10,16 +10,19 @@ A cross-platform desktop render queue manager for [Blender](https://www.blender.
 
 ## Features
 
-- **Drag & drop** `.blend` files directly onto the app
+- **Drag & drop** `.blend` files directly onto the app, or click **+ Add Blend File** to browse
 - **Auto-reads scene settings** — frame range, output path, render engine, resolution and samples are pulled straight from the file
-- **Scene thumbnail preview** extracted from the `.blend` binary (no Blender needed for this step)
-- **Queue management** — add, reorder, cancel, retry jobs
+- **Scene thumbnail preview** extracted from the `.blend` binary (no Blender process needed for this step)
+- **Queue management** — add, reorder, cancel, retry blend files
 - **Per-engine support** — Cycles, EEVEE, EEVEE Next
-- **Parameter overrides** — override samples, resolution and thread count per job without touching the original file
+- **Parameter overrides** — override samples, resolution and thread count per file without touching the original
+- **Editable frame range** — adjust start/end/step in the detail panel while the file is queued
 - **Live progress** — frame-by-frame progress bar with Blender stdout parsing
-- **Job detail panel** — thumbnail, all parameters, real-time log output
+- **Last-frame preview** — thumbnail of the most recently rendered frame updates in real time
+- **Detail panel** — parameters, real-time log output, and a shortcut to open the output folder
 - **Global progress bar** — see overall queue completion at a glance
-- **Persistent config** — Blender path is saved across sessions
+- **Default output folder** — set a root output directory in Settings; each blend file renders into its own named subfolder automatically
+- **Persistent config** — Blender path and output settings are saved across sessions
 - **First-launch setup** — auto-detects your Blender installation on first run
 - **Cross-platform builds** — Windows (installer + portable), macOS (DMG), Linux (AppImage + deb)
 
@@ -40,16 +43,16 @@ Download the latest release for your platform from the [Releases](../../releases
 
 | Platform | File |
 |----------|------|
-| Windows (installer) | `Fox Blender Queue Setup X.X.X.exe` |
-| Windows (portable)  | `Fox Blender Queue X.X.X.exe` |
-| macOS               | `Fox Blender Queue-X.X.X.dmg` |
-| Linux               | `Fox Blender Queue-X.X.X.AppImage` |
+| Windows (installer) | `Shiretsuna's Blender Queue-X.X.X-windows-setup.exe` |
+| Windows (portable)  | `Shiretsuna's Blender Queue-X.X.X-windows-portable.exe` |
+| macOS               | `Shiretsuna's Blender Queue-X.X.X-macos.dmg` |
+| Linux               | `Shiretsuna's Blender Queue-X.X.X-linux.AppImage` |
 
 ### Build from source
 
 ```bash
-git clone https://github.com/Shiretsuna/fox-blender-queue.git
-cd fox-blender-queue
+git clone https://github.com/Shiretsuna/shiretsuna-s-blender-queue.git
+cd shiretsuna-s-blender-queue
 npm install
 ```
 
@@ -85,10 +88,20 @@ All build output goes to the `release/` folder.
 ## Usage
 
 1. **First launch** — the app will try to auto-detect your Blender installation. If it can't find it, you'll be prompted to locate the executable manually.
-2. **Add a job** — drag a `.blend` file onto the window, or click **+ Add Job** and browse. Scene settings are auto-filled.
-3. **Review & adjust** — tweak frame range, engine, samples or resolution overrides as needed.
-4. **Start the queue** — click **▶ Start Queue**. Jobs run one at a time. Progress is shown per-job and globally at the bottom.
-5. **Inspect results** — click any job to open the detail panel with the full Blender log and an "Open Output Folder" shortcut.
+2. **Add a blend file** — drag a `.blend` file onto the window, or click **+ Add Blend File** and pick a file. Scene settings are auto-filled from the file.
+3. **Review & adjust** — tweak frame range, engine, samples or resolution overrides in the detail panel as needed.
+4. **Start the queue** — click **▶ Start Queue**. Files render one at a time. Progress is shown per-file and globally at the bottom.
+5. **Inspect results** — click any item in the queue to open the detail panel with the full Blender log, frame preview, and an **Open Output Folder** button.
+
+### Default output folder
+
+In **Settings**, you can enable a default output folder. When enabled, every blend file you add will automatically render into:
+
+```
+<your root folder>/<blend file name>/frame_####
+```
+
+You can still override the output path per file in the detail panel.
 
 ---
 

@@ -9,14 +9,15 @@ interface Props {
   onRemove: (id: string) => void
   onCancel: (id: string) => void
   onRetry: (id: string) => void
+  onOpenFolder: (id: string) => void
 }
 
-export function JobList({ jobs, selectedJobId, onSelect, onRemove, onCancel, onRetry }: Props): JSX.Element {
+export function JobList({ jobs, selectedJobId, onSelect, onRemove, onCancel, onRetry, onOpenFolder }: Props): JSX.Element {
   if (jobs.length === 0) {
     return (
       <div className={styles.empty}>
-        <p>No render jobs yet.</p>
-        <p className={styles.hint}>Click &ldquo;+ Add Job&rdquo; to queue a Blender scene.</p>
+        <p>No blend files queued yet.</p>
+        <p className={styles.hint}>Click &ldquo;+ Add Blend File&rdquo; or drop a .blend file here.</p>
       </div>
     )
   }
@@ -33,6 +34,7 @@ export function JobList({ jobs, selectedJobId, onSelect, onRemove, onCancel, onR
           onRemove={() => onRemove(job.id)}
           onCancel={() => onCancel(job.id)}
           onRetry={() => onRetry(job.id)}
+          onOpenFolder={() => onOpenFolder(job.id)}
         />
       ))}
     </div>
