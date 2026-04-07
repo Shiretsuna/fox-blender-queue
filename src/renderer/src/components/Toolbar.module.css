@@ -1,0 +1,82 @@
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 16px;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo {
+  color: var(--accent);
+  font-size: 16px;
+}
+
+.title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.stats {
+  display: flex;
+  gap: 6px;
+  flex: 1;
+  flex-wrap: wrap;
+}
+
+.chip {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+.info { background: rgba(80, 144, 232, 0.18); color: var(--info); }
+.warning { background: rgba(232, 160, 32, 0.18); color: var(--warning); }
+.success { background: rgba(76, 175, 110, 0.18); color: var(--success); }
+.error { background: rgba(224, 82, 82, 0.18); color: var(--error); }
+
+.actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.btnAdd {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+}
+.btnAdd:hover { background: var(--bg-hover); }
+
+.btnStart {
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+.btnStart:hover:not(:disabled) { background: #c96c0b; }
+
+.btnPause {
+  background: var(--bg-elevated);
+  color: var(--warning);
+  border: 1px solid var(--border);
+}
+.btnPause:hover { background: var(--bg-hover); }
+
+.btnSettings {
+  background: none;
+  color: var(--text-secondary);
+  font-size: 18px;
+  padding: 4px 8px;
+}
+.btnSettings:hover { color: var(--text-primary); }

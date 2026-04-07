@@ -1,0 +1,38 @@
+.thumbRow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px;
+  background: var(--bg-elevated);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.thumb {
+  width: 96px;
+  height: 72px;
+  object-fit: contain;
+  background: #000;
+  border-radius: 4px;
+  flex-shrink: 0;
+  image-rendering: pixelated;
+}
+
+.thumbMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.thumbLabel {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.thumbScene {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
