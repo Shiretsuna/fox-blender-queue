@@ -19,14 +19,22 @@ jobs:
       matrix:
         include:
           - os: windows-latest
-            build_args: --win nsis portable
-            artifact_pattern: release/**/*.exe
+            build_args: --win nsis portable zip
+            # Picks up setup installer, portable exe, and zip — excludes elevate.exe and blockmaps
+            artifact_pattern: |
+              release/Fox Blender Queue-*-windows-setup.exe
+              release/Fox Blender Queue-*-win-x64.exe
+              release/Fox Blender Queue-*-win-x64.zip
           - os: macos-latest
             build_args: --mac dmg zip
-            artifact_pattern: release/**/*.{dmg,zip}
+            artifact_pattern: |
+              release/Fox Blender Queue-*-mac-*.dmg
+              release/Fox Blender Queue-*-mac-*.zip
           - os: ubuntu-latest
             build_args: --linux AppImage deb
-            artifact_pattern: release/**/*.{AppImage,deb}
+            artifact_pattern: |
+              release/Fox Blender Queue-*-linux-*.AppImage
+              release/fox-blender-queue_*_amd64.deb
 
     runs-on: ${{ matrix.os }}
 
@@ -40,25 +48,19 @@ jobs:
           node-version: 20
           cache: npm
 
-      # electron-builder on Linux needs rpm for package tooling
-      - name: Install Linux dependencies
-        if: runner.os == 'Linux'
-        run: sudo apt-get update && sudo apt-get install -y rpm
-
       - name: Install dependencies
         run: npm ci
 
       - name: Build app
         run: npm run build
 
-      # Package without publishing — each job uploads its own artifacts below
+      # Package without publishing — artifacts are uploaded below
       - name: Package
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: false
         run: npx electron-builder ${{ matrix.build_args }} --publish never
 
-      # Upload this platform's artifacts to the GitHub Release for this tag.
-      # Creates the release automatically if it doesn't exist yet.
+      # Upload only the relevant files to the GitHub Release, nothing else
       - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
